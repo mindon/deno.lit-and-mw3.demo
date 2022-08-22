@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<file target-language="zh_CN" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+<body>
+<trans-unit id="s057d05cfa4fe5b98">
+  <source>Click Count: <x id="0" equiv-text="${this.count}"/></source>
+  <target>点击计数: <x id="0" equiv-text="${this.count}"/></target>
+</trans-unit>
+</body>
+</file>
+</xliff>

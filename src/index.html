@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <title>Hello</title>
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <link rel="stylesheet" href="style.scss" />
+    <style>
+      body {
+        background-color: var(--md-sys-color-primary);
+      }
+      my-element {
+        display: inline-block;
+        margin-left: 1rem;
+      }
+    </style>
+  </head>
+  <body>  
+    <div style="margin-bottom:2rem">
+      <button onclick="setLocale('en')" class="mdc-button">
+        <div class="mdc-button__ripple"></div>
+        <span class="mdc-button__label">English</span>
+      </button>
+      <button onclick="setLocale('zh_CN')" class="mdc-button">
+        <div class="mdc-button__ripple"></div>
+        <span class="mdc-button__label">简体中文</span>
+      </button>
+    </div>
+
+    <my-element name="Deno"></my-element>
+    <my-element name="Mindon"></my-element>
+  <h1>demos on</h1>
+   <ol>
+      <li>typescript with <a href="https://deno.land">deno</a></li>
+      <li><a href="https://github.com/mindon/packup">packup</a> build and serve for browser</li>
+      <li>using lit element from <a href="https://lit.dev">https://lit.dev</a>, with localization</li>
+      <li>shared <a href="https://github.com/material-components/material-web">material-web (material design 3)</a> styles from parent document inside lit-element with xstyles.ts</li>
+      <li> using npm package <strong>npm:@material/material-color-utilities</strong> to create theme from image area or color with <a href="https://github.com/mindon/packup">packup</a></li>
+   </ol>
+    <div  style="zoom: .2"><img src="../static/img/browsers.png" data-area="2248,0,562,281" usemap="#themes" /></div>
+    <map name="themes">
+      <area shape="rect" coords="0,0,562,562" alt="Chrome" href="#0,281,562,281">
+      <area shape="rect" coords="562,0,1124,562" alt="Edge" href="#562,281,562,281">
+      <area shape="rect" coords="1124,0,1686,562" alt="Firefox" href="#1124,0,562,281">
+      <area shape="rect" coords="1686,0,2248,562" alt="Opera" href="#1686,0,562,281">
+      <area shape="rect" coords="2248,0,2810,562" alt="Safari" href="#2248,0,562,281">
+    </map>
+  </body>
+  <script type="module" src="./my-element.ts"></script>
+  <script type="module" src="./theme.ts"></script>
+  <script>
+function applyArea(dom) {
+  const area = dom.getAttribute('href').substr(1);
+  themeFromImage(document.querySelector('img'), area);  
+} 
+
+Array.from(document.querySelectorAll('area')).forEach(elm => {
+  elm.addEventListener('click',  (evt) => {
+    applyArea(evt.target);
+  });
+});
+
+Array.from(document.querySelectorAll(".mdc-button")).forEach(btn => mdc.ripple.MDCRipple.attachTo(btn));
+  </script>
+  </html>

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "lib": ["dom", "esnext"],
+    "strict": true,
+    "isolatedModules": true
+  },
+  "exclude": [
+    "node_modules"
+  ],
+}
