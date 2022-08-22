@@ -31,7 +31,9 @@ how to serve or build with packup?
 ------------
 deno from https://deno.land/ is required.
 
-**packup** from `https://github.com/mindon/packup` if required to pack dist/
+**packup** from https://github.com/mindon/packup is required to pack dist/
+
+import from **npm:** is supported with this repo of packup
 
 `packup build src/*.html` to build production dist/
 
