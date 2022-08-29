@@ -1,4 +1,4 @@
-import { Hct, argbFromHex, themeFromSourceColor, applyTheme, sourceColorFromImage } from 'npm:@material/material-color-utilities/typescript/index.ts';
+import { Hct, argbFromHex, themeFromSourceColor, applyTheme, sourceColorFromImage } from 'npm~@material/material-color-utilities/typescript/index.ts';
 
 // Simple demonstration of HCT.
 const color = Hct.fromInt(0xff4285f4);
