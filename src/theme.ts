@@ -1,4 +1,10 @@
-import { Hct, argbFromHex, themeFromSourceColor, applyTheme, sourceColorFromImage } from 'npm~@material/material-color-utilities/typescript/index.ts';
+import {
+  applyTheme,
+  argbFromHex,
+  Hct,
+  sourceColorFromImage,
+  themeFromSourceColor,
+} from "npm>:@material/material-color-utilities/typescript/index.ts";
 
 // Simple demonstration of HCT.
 const color = Hct.fromInt(0xff4285f4);
@@ -12,9 +18,7 @@ export async function themeFromImage(img: any, area?: string) {
     img.dataset.area = area;
   }
   console.log(img.width, img.height);
-  const origin = img
-    ? await sourceColorFromImage(img)
-    : argbFromHex('#f82506');
+  const origin = img ? await sourceColorFromImage(img) : argbFromHex("#f82506");
 
   const theme = themeFromSourceColor(origin, [
     {
@@ -32,9 +36,9 @@ export async function themeFromImage(img: any, area?: string) {
   const systemDark = matchMedia("(prefers-color-scheme: dark)").matches;
 
   // // Apply the theme to the body by updating custom properties for material tokens
-  applyTheme(theme, {target: document.body, dark: systemDark});
+  applyTheme(theme, { target: document.body, dark: systemDark });
 }
 
-themeFromImage(document.querySelector('img'));
+themeFromImage(document.querySelector("img"));
 
 (globalThis as any).themeFromImage = themeFromImage;

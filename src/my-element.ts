@@ -3,24 +3,23 @@
 
 // !bundle=/shared/depends
 import {
-  LitElement,
-  html,
   css,
   customElement,
+  html,
+  LitElement,
   property,
-  xstyles,
   ripplefx,
-} from '../deps.ts';
+  xstyles,
+} from "../deps.ts";
 
 // !bundle=module
-import {
-  str,
-  msg,
-  localized
-} from './locales.ts';
+import { localized, msg, str } from "./locales.ts";
 
+const xrules = xstyles(
+  /([.]mdc-button(\.mdc-ripple-upgraded)?|:root)([._-]|\b)/,
+  /^mdc-ripple/,
+).map(({ cssText }) => cssText).join("\n");
 
-const xrules = xstyles(/([.]mdc-button(\.mdc-ripple-upgraded)?|:root)([._-]|\b)/, /^mdc-ripple/).map(({ cssText }) => cssText).join('\n');
 /**
  * An example element.
  *
@@ -28,7 +27,7 @@ const xrules = xstyles(/([.]mdc-button(\.mdc-ripple-upgraded)?|:root)([._-]|\b)/
  * @slot - This element has a slot
  * @csspart button - The button
  */
-@customElement('my-element')
+@customElement("my-element")
 @localized()
 export class MyElement extends LitElement {
   static styles = css`
@@ -41,13 +40,13 @@ export class MyElement extends LitElement {
   `;
 
   @property()
-  name = 'World';
+  name = "World";
 
-  @property({type: Number})
+  @property({ type: Number })
   count = 0;
 
   firstUpdated() {
-    ripplefx('.mdc-button', this.renderRoot);
+    ripplefx(".mdc-button", this.renderRoot);
   }
 
   render() {
@@ -64,7 +63,9 @@ export class MyElement extends LitElement {
       </button>
       <button class="mdc-button" @click=${this._onClick} part="button">
         <div class="mdc-button__ripple"></div>
-        <span class="mdc-button__label">${msg(str`Click Count: ${this.count}`)}</span>
+        <span class="mdc-button__label">${
+      msg(str`Click Count: ${this.count}`)
+    }</span>
       </button>
       <slot></slot>
     `;
@@ -72,7 +73,7 @@ export class MyElement extends LitElement {
 
   private _onClick() {
     this.count++;
-    this.dispatchEvent(new CustomEvent('count-changed'));
+    this.dispatchEvent(new CustomEvent("count-changed"));
   }
 
   /**
@@ -86,6 +87,6 @@ export class MyElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'my-element': MyElement;
+    "my-element": MyElement;
   }
 }

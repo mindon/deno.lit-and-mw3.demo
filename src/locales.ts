@@ -1,13 +1,6 @@
-export {
-  str,
-  msg,
-  localized,
-} from 'https://cdn.skypack.dev/@lit/localize';
+export { localized, msg, str } from "https://cdn.skypack.dev/@lit/localize";
 
-import {
-  configureLocalization,
-} from 'https://cdn.skypack.dev/@lit/localize';
-
+import { configureLocalization } from "https://cdn.skypack.dev/@lit/localize";
 
 // @customElement('my-element')
 // @localized() should after @customElement, this order MATTERS!
@@ -23,15 +16,15 @@ import {
 // step 5. `packup build`
 import * as zh_CN from "./locales/zh_CN.ts";
 
-const sourceLocale = 'en';
-const targetLocales = ['zh_CN'];
+const sourceLocale = "en";
+const targetLocales = ["zh_CN"];
 const allLocales = [sourceLocale].concat(targetLocales);
 
 const locales = new Map(
-  targetLocales.map((locale) => [locale, {templates: zh_CN.templates}])
+  targetLocales.map((locale) => [locale, { templates: zh_CN.templates }]),
 );
 
-const {getLocale, setLocale} = configureLocalization({
+const { getLocale, setLocale } = configureLocalization({
   sourceLocale,
   targetLocales,
   loadLocale: async (locale: string) => locales.get(locale),
