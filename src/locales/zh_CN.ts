@@ -3,7 +3,7 @@
     // Re-generate this file by running lit-localize
 
     
-    import {str} from 'https://cdn.skypack.dev/@lit/localize';
+    import {str} from 'https://cdn.skypack.dev/@lit/localize?dts';
 
     /* eslint-disable no-irregular-whitespace */
     /* eslint-disable @typescript-eslint/no-explicit-any */

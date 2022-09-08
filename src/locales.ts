@@ -1,6 +1,6 @@
-export { localized, msg, str } from "https://cdn.skypack.dev/@lit/localize";
+export { localized, msg, str } from "https://cdn.skypack.dev/@lit/localize?dts";
 
-import { configureLocalization } from "https://cdn.skypack.dev/@lit/localize";
+import { configureLocalization } from "https://cdn.skypack.dev/@lit/localize?dts";
 
 // @customElement('my-element')
 // @localized() should after @customElement, this order MATTERS!
