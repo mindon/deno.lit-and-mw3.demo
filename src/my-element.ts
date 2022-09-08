@@ -2,23 +2,13 @@
 // import {str, msg, localized} from '@lit/localize';
 
 // !bundle=/shared/depends
-import {
-  css,
-  customElement,
-  html,
-  LitElement,
-  property,
-  ripplefx,
-  xstyles,
-} from "../deps.ts";
+import { css, customElement, html, LitElement, property } from "../deps.ts";
 
 // !bundle=module
 import { localized, msg, str } from "./locales.ts";
 
-const xrules = xstyles(
-  /([.]mdc-button(\.mdc-ripple-upgraded)?|:root)([._-]|\b)/,
-  /^mdc-ripple/,
-).map(({ cssText }) => cssText).join("\n");
+// !bundle=off
+import "https://cdn.skypack.dev/@material/web/button/filled-button.js";
 
 /**
  * An example element.
@@ -35,6 +25,7 @@ export class MyElement extends LitElement {
       display: block;
       border: solid 1px gray;
       padding: 16px;
+      margin: 1rem;
       max-width: 800px;
     }
   `;
@@ -45,28 +36,14 @@ export class MyElement extends LitElement {
   @property({ type: Number })
   count = 0;
 
-  firstUpdated() {
-    ripplefx(".mdc-button", this.renderRoot);
-  }
-
   render() {
     return html`
-    <style>${xrules}</style>
       <h1>${this.sayHello(this.name)}! ${this.count}</h1>
-      <button class="mdc-button">
-        <div class="mdc-button__ripple"></div>
-        <span class="mdc-button__label">Deno</span>
-      </button>
-      <button class="mdc-button">
-        <div class="mdc-button__ripple"></div>
-        <span class="mdc-button__label">Packup</span>
-      </button>
-      <button class="mdc-button" @click=${this._onClick} part="button">
-        <div class="mdc-button__ripple"></div>
-        <span class="mdc-button__label">${
+      <md-filled-button label="Deno"></md-filled-button>
+      <md-filled-button label="Packup"></md-filled-button>
+      <md-filled-button label="${
       msg(str`Click Count: ${this.count}`)
-    }</span>
-      </button>
+    }" @click=${this._onClick}></md-filled-button>
       <slot></slot>
     `;
   }
