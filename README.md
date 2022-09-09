@@ -21,7 +21,7 @@ remove localize imports
 `grep -l 'locales.ts' src/**/*.ts -exec sed -i '' 's$import {msg,src,localized} from "@lit/localize";$$' {} \;`
 
 update localize imports in **src/locales/*.ts**
-`sed -i '' "s$'@lit/localize'$'https://cdn.skypack.dev/@lit/localize'$" src/locales/*.ts`
+`sed -i '' "s$'@lit/localize'$'https://cdn.skypack.dev/@lit/localize?dts'$" src/locales/*.ts`
 
 
 **src/locales.ts** loads relative locale ts, and providing **window.setLocale(id)**,  **window.getLocale()** and  **window.locales**.
