@@ -36,7 +36,7 @@ export async function themeFromImage(img: any, area?: string) {
   const systemDark = matchMedia("(prefers-color-scheme: dark)").matches;
 
   // // Apply the theme to the body by updating custom properties for material tokens
-  applyTheme(theme, { target: document.body, dark: systemDark });
+  applyTheme(theme, { target: document.documentElement, dark: systemDark });
 }
 
 themeFromImage(document.querySelector("img"));

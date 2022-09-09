@@ -10,7 +10,6 @@ nodejs from https://nodejs.org is required.
 add localize imports
 `grep -l 'locales.ts' src/**/*.ts -exec sed -i '' 's$locales.ts[\'"];$\0import {msg,src,localized} from "@lit/localize";' {} \;`
 
-
 `lit-localize extract` to extract i18n messages into **xliff/**.
 after updating **xliff/*.xlf**, run `lit-localize build` to generate l10n messages in **src/locales/**.
 
@@ -21,7 +20,7 @@ remove localize imports
 `grep -l 'locales.ts' src/**/*.ts -exec sed -i '' 's$import {msg,src,localized} from "@lit/localize";$$' {} \;`
 
 update localize imports in **src/locales/*.ts**
-`sed -i '' "s$'@lit/localize'$'https://cdn.skypack.dev/@lit/localize?dts'$" src/locales/*.ts`
+`sed -i '' "s$'@lit/localize'$'https://cdn.skypack.dev/@lit/localize\?dts'$" src/locales/*.ts`
 
 
 **src/locales.ts** loads relative locale ts, and providing **window.setLocale(id)**,  **window.getLocale()** and  **window.locales**.

@@ -7,9 +7,6 @@ import { css, customElement, html, LitElement, property } from "../deps.ts";
 // !bundle=module
 import { localized, msg, str } from "./locales.ts";
 
-// !bundle=off
-import "https://cdn.skypack.dev/@material/web/button/filled-button.js";
-
 /**
  * An example element.
  *
