@@ -13,7 +13,7 @@ console.log(`Chrome: ${color.chroma}`);
 console.log(`Tone: ${color.tone}`);
 
 // Get the theme from a hex color
-export async function themeFromImage(img: any, area?: string) {
+export async function themeFromImage(img: HTMLImageElement, area?: string) {
   if (img && area) {
     img.dataset.area = area;
   }
@@ -41,4 +41,7 @@ export async function themeFromImage(img: any, area?: string) {
 
 themeFromImage(document.querySelector("img"));
 
-(globalThis as any).themeFromImage = themeFromImage;
+declare global {
+  let themeFromImage: CallableFunction;
+}
+globalThis.themeFromImage = themeFromImage;

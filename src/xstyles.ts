@@ -1,5 +1,5 @@
 // extract css rules and keyframes from stylesheets
-export const xstyles = function (names: any, kfr: any) {
+export const xstyles = function (names: RegExp, kfr: RegExp) {
   const { origin } = globalThis.location;
   let rules = [...globalThis.document.styleSheets].filter(
     ({ href, ownerNode }) => {
@@ -38,7 +38,7 @@ export const xstyles = function (names: any, kfr: any) {
   return rules;
 };
 
-export const ripplefx = function (selectors: string, root: any) {
+export const ripplefx = function (selectors: string, root: HTMLElement | Document) {
   Array.from((root || globalThis.document).querySelectorAll(selectors)).forEach(
     (btn) => globalThis.mdc?.ripple.MDCRipple.attachTo(btn),
   );

@@ -27,13 +27,17 @@ const locales = new Map(
 const { getLocale, setLocale } = configureLocalization({
   sourceLocale,
   targetLocales,
-  loadLocale: async (locale: string) => locales.get(locale),
+  loadLocale: async (locale: string) => await locales.get(locale),
 });
 
-const win = globalThis as any;
-win.setLocale = setLocale;
-win.getLocale = getLocale;
-win.locales = allLocales;
+declare global {
+  let setLocale: CallableFunction;
+  let getLocale: CallableFunction;
+  let locales: string[];
+}
+globalThis.setLocale = setLocale;
+globalThis.getLocale = getLocale;
+globalThis.locales = allLocales;
 // win.addEventListener('lit-localize-status', (event) => {
 //   const { detail } = event;
 //   console.log(detail);

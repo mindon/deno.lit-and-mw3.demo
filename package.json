@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "@lit/localize": "^0.11.3",
-    "@material/material-color-utilities": "^0.2.0"
+    "@material/material-color-utilities": "^0.2.0",
+    "three": "^0.143.0"
   },
   "devDependencies": {
     "@lit/localize-tools": "^0.6.5"
