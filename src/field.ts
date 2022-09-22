@@ -13,6 +13,14 @@ type Feature = {
   zoom?: number;
 };
 
+type Clip = {
+  src?: string;
+  rgb?: string;
+  beta?: number;
+  area?: Array<number>;
+  dur?: number;
+};
+
 type Env = {
   ctx: CanvasRenderingContext2D;
   cx: number;
@@ -30,15 +38,13 @@ declare global {
 globalThis.fieldFx = fieldFx;
 
 export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
-  const dset = canvas.dataset;
-  const showOrigin = dset.origin !== undefined;
   const feature: Feature = {
     g: 1,
     k: 1,
     z: 2,
     tension: .25,
-    stroke: parseFloat(dset.stroke || "1") || 1,
-    zoom: parseFloat(dset.zoom || "1") || 1,
+    stroke: 1,
+    zoom: 1,
   };
   if (opts) {
     if (opts.g) feature.g = opts.g;
@@ -46,16 +52,36 @@ export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
     if (opts.z) feature.z = opts.z;
     if (opts.tension) feature.tension = opts.tension;
   }
-  const alpha = 12, beta = parseInt(dset.unit || "8", 10) || 8;
+  const alpha = 12;
   const splitOpacity = "99";
-  let area: Array<number> | undefined =
-    dset.area && /^\d+(,\d+){3}$/.test(dset.area)
-      ? dset.area?.split(",").map((v) => parseInt(v, 10))
-      : undefined;
 
-  const src = dset.src || "/img/mindon.png";
-  const rgb = dset.rgb || "";
-  const ctx = canvas?.getContext("2d");
+  function customize() {
+    const dset = canvas.dataset;
+    const {
+      origin,
+      src = "/img/mindon.png",
+      rgb = "",
+      unit = "8",
+      stroke = "1",
+      zoom = "1",
+      area = "",
+    } = dset;
+    feature.stroke = parseFloat(stroke) || 1;
+    feature.zoom = parseFloat(zoom) || 1;
+    return {
+      showOrigin: origin !== undefined,
+      src,
+      rgb,
+      beta: parseInt(unit, 10) || 8,
+      area: area && /^\d+(,\d+){3}$/.test(area)
+        ? area.split(",").map((v) => parseInt(v, 10))
+        : undefined,
+    };
+  }
+
+  let { showOrigin, src, rgb, beta, area } = customize();
+
+  const ctx = canvas.getContext("2d");
   ctx?.clearRect(0, 0, canvas.width, canvas.height);
 
   let cached: {
@@ -82,6 +108,8 @@ export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
   }
 
   function load(): void {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     let [w, h] = [img.width, img.height];
     if (!area && (w > 960 || h > 960)) {
       const ratio = Math.max(w / 562, h / 562);
@@ -225,6 +253,39 @@ export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
       ctx.stroke();
     }
   }
+
+  canvas.reload = () => {
+    ({ showOrigin, src, rgb, beta, area } = customize());
+    if (src != img.src) {
+      img.src = src;
+    } else {
+      load();
+    }
+  };
+  canvas.draw = draw;
+  let tid: number;
+  canvas.play = (clips: Array<Clip>, loop = true) => {
+    if (tid) clearTimeout(tid);
+    let i = 0;
+    const imax = clips.length;
+    const playing = () => {
+      if (i >= imax) {
+        i = 0;
+        if (!loop) return;
+      }
+      const clip = clips[i++];
+      if (clip.src) src = clip.src;
+      if (clip.rgb) rgb = clip.rgb;
+      if (clip.area && clip.area.length === 4) area = clip.area;
+      if (src != img.src) {
+        img.src = src;
+      } else {
+        load();
+      }
+      tid = setTimeout(playing, clip.dur || 500);
+    };
+    playing();
+  };
 }
 
 function cc(env: Env, r0: number, deg: number, pixels: Array<Dot>) {
