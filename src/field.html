@@ -54,6 +54,9 @@
       a.addEventListener('click', () => {
         flinp.click();
       });
+      window.addEventListener('field-fx-ready', () => {
+        a.querySelector('canvas').play([{rgb:'r'}, {rgb:'g'}, {rgb:'b'}, {rgb:'#'}, {rgb:'*', dur: 1}]);
+      });
     </script>
   </body>
 </html>

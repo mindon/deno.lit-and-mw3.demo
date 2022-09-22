@@ -36,6 +36,7 @@ declare global {
   let fieldFx: CallableFunction;
 }
 globalThis.fieldFx = fieldFx;
+globalThis.dispatchEvent(new CustomEvent("field-fx-ready"));
 
 export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
   const feature: Feature = {
@@ -282,7 +283,7 @@ export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
       } else {
         load();
       }
-      tid = setTimeout(playing, clip.dur || 500);
+      tid = setTimeout(playing, (clip.dur || .3) * 1000);
     };
     playing();
   };
