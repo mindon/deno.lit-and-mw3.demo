@@ -38,7 +38,10 @@ export const xstyles = function (names: RegExp, kfr: RegExp) {
   return rules;
 };
 
-export const ripplefx = function (selectors: string, root: HTMLElement | Document) {
+export const ripplefx = function (
+  selectors: string,
+  root: HTMLElement | Document,
+) {
   Array.from((root || globalThis.document).querySelectorAll(selectors)).forEach(
     (btn) => globalThis.mdc?.ripple.MDCRipple.attachTo(btn),
   );
