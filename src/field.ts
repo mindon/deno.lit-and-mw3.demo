@@ -111,7 +111,7 @@ export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
   function load(): void {
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    let [w, h] = [img.width, img.height];
+    let [w, h] = [img.naturalWidth, img.naturalHeight];
     if (!area && (w > 960 || h > 960)) {
       const ratio = Math.max(w / 562, h / 562);
       area = [0, 0, w / ratio, h / ratio];

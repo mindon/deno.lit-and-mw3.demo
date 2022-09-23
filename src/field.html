@@ -45,7 +45,7 @@
           const data = r.result;
           Array.from(document.querySelectorAll("canvas.field-fx")).forEach(c => {
             c.dataset.src = data;
-            fieldFx(c);
+            c.reload();
           });
           r.onload = null;
         };
