@@ -27,35 +27,49 @@
     <canvas class="field-fx" data-src="/img/mindon.png" data-rgb="b"></canvas>
     <canvas class="field-fx" data-src="/img/mindon.png" data-rgb="#"></canvas></div>
     <a><canvas class="field-fx" data-src="/img/mindon.png" data-origin data-rgb="*"></canvas></a>
+    <canvas id="mykq" data-src="/img/kq.jpeg" data-rgb="#" data-area="340,14,80,80" data-zoom="3"></canvas>
     <script type="module" src="field.ts"></script>
     <script>
       const a = document.querySelector('a');
-      const flinp = document.createElement('input');
-      flinp.type = 'file';
-      flinp.accept = 'image/jpeg,image/png,image/gif,.gif,.png,.jpg,.jpeg';
-      flinp.addEventListener('change', (evt) => {
+      function loadr(evt) {
         const files = evt.target.files;
         if (!window.FileReader || !files || files.length == 0) {
           return;
         }
         const r = new FileReader();
-        r.onload = () => {
+        r.onload = (evt) => {
           const img = a.querySelector('img');
           if (img) a.removeChild(img);
-          const data = r.result;
+          const data = evt.target.result;
           Array.from(document.querySelectorAll("canvas.field-fx")).forEach(c => {
             c.dataset.src = data;
             c.reload();
           });
-          r.onload = null;
         };
         r.readAsDataURL(files[0]);
-      });
+      }
+      const flinp = document.createElement('input');
+      flinp.style.display = "none";
+      flinp.type = 'file';
+      flinp.accept = 'image/jpeg,image/png,image/gif,.gif,.png,.jpg,.jpeg';
+      flinp.addEventListener('change', loadr);
+      document.body.appendChild(flinp);
+
       a.addEventListener('click', () => {
         flinp.click();
       });
       window.addEventListener('field-fx-ready', () => {
         a.querySelector('canvas').play([{rgb:'r'}, {rgb:'g'}, {rgb:'b'}, {rgb:'#'}, {rgb:'*', dur: 1}]);
+
+        // kq animation with clips
+        const mykq = document.querySelector('#mykq');
+        fieldFx(mykq);
+        const sampling = Array.from(Array(890).keys());
+        mykq.play(sampling.map(i => ({area: [664, -100 + i *2, 180, 180], dur: 0.01, rgb: '#'}))
+          .concat(sampling.map(i => ({area: [470, -100 + i * 2, 180, 180], dur: 0.01, rgb: '#'})))
+          .concat(Array.from(Array(370).keys()).map(i => ({area: [264, -100 + i * 2, 180, 180], dur: 0.01, rgb: '#'})))
+          .concat(Array.from(Array(470).keys()).map(i => ({area: [80, 720 + i*2, 180, 180], dur: 0.01, rgb: '#'})))
+          );
       });
     </script>
   </body>

@@ -34,11 +34,21 @@ Array.from(document.querySelectorAll("canvas.field-fx")).forEach((c) =>
 
 declare global {
   let fieldFx: CallableFunction;
+
+  interface HTMLCanvasElement {
+    clips: Array<Clip>;
+    play: CallableFunction;
+    stop: CallableFunction;
+    reload: CallableFunction;
+    draw: CallableFunction;
+    playing: number;
+  }
 }
+
 globalThis.fieldFx = fieldFx;
 globalThis.dispatchEvent(new CustomEvent("field-fx-ready"));
 
-export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
+export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature): void {
   const feature: Feature = {
     g: 1,
     k: 1,
@@ -56,7 +66,7 @@ export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
   const alpha = 12;
   const splitOpacity = "99";
 
-  function customize() {
+  const customize = () => {
     const dset = canvas.dataset;
     const {
       origin,
@@ -78,7 +88,7 @@ export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
         ? area.split(",").map((v) => parseInt(v, 10))
         : undefined,
     };
-  }
+  };
 
   let { showOrigin, src, rgb, beta, area } = customize();
 
@@ -95,20 +105,13 @@ export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
   let [cx, cy, r] = [0, 0, 0];
 
   if (!ctx) return;
-
   ctx.imageSmoothingEnabled = true;
-
-  const img = new Image();
-  img.crossOrigin = "anonymous";
-  img.addEventListener("load", load);
 
   let env: Env;
   const cv = document.createElement("canvas");
-  if (src) {
-    img.src = src;
-  }
+  const img = new Image();
 
-  function load(): void {
+  const load = () => {
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     let [w, h] = [img.naturalWidth, img.naturalHeight];
@@ -213,9 +216,15 @@ export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
     cached = { red, green, blue, lightness };
     // console.log(cached);
     draw();
+  };
+  img.crossOrigin = "anonymous";
+  img.addEventListener("load", load);
+
+  if (src) {
+    img.src = src;
   }
 
-  function draw() {
+  const draw = () => {
     if (!ctx || !env) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     const { red, green, blue, lightness } = cached;
@@ -253,7 +262,7 @@ export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
       }
       ctx.stroke();
     }
-  }
+  };
 
   canvas.reload = () => {
     ({ showOrigin, src, rgb, beta, area } = customize());
@@ -264,14 +273,31 @@ export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
     }
   };
   canvas.draw = draw;
-  let tid: number;
-  canvas.play = (clips: Array<Clip>, loop = true) => {
-    if (tid) clearTimeout(tid);
+  canvas.stop = function () {
+    if (this.playing) {
+      clearTimeout(this.playing);
+    }
+    this.dispatchEvent(new CustomEvent("stop"));
+  };
+  canvas.play = function (clips?: Array<Clip>, loop = true) {
+    if (clips) {
+      this.clips = clips;
+    } else {
+      clips = this.clips;
+    }
+    if (!clips || !clips.length) {
+      throw new Error("clips required");
+    }
+    if (this.playing) {
+      clearTimeout(this.playing);
+    }
     let i = 0;
     const imax = clips.length;
     const playing = () => {
+      if (!clips) return;
       if (i >= imax) {
         i = 0;
+        this.dispatchEvent(new CustomEvent("fin"));
         if (!loop) return;
       }
       const clip = clips[i++];
@@ -283,7 +309,7 @@ export function fieldFx(canvas: HTMLCanvasElement, opts?: Feature) {
       } else {
         load();
       }
-      tid = setTimeout(playing, (clip.dur || .3) * 1000);
+      this.playing = setTimeout(playing, (clip.dur || .3) * 1000);
     };
     playing();
   };
