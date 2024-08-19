@@ -1,5 +1,4 @@
-// !bundle=off
-import * as THREE from "https://cdn.skypack.dev/three";
+import * as THREE from "npm:three";
 
 // !bundle=module:{three}
 import { OrbitControls } from "npm>:three/examples/jsm/controls/OrbitControls.js";
